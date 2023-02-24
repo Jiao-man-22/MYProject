@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jiao.testproject.testproject.dao.UserDao">
+<!--结果集映射-->
+<!-- 多表关联的 sql 查询 -->
+    <resultMap id="userAndRole" type="com.jiao.testproject.testproject.dto.pojo.UserRole">
+        <result column="user_id" jdbcType="VARCHAR" property="userId" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="role" jdbcType="VARCHAR" property="userRole" />
+        <result column="comment" jdbcType="VARCHAR" property="comment" />
+    </resultMap>
+
+    <resultMap id="userInfoAndDepartment" type="com.jiao.testproject.testproject.dto.pojo.UserInfo">
+        <result column="user_id" jdbcType="VARCHAR" property="userId" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="departmentId" jdbcType="VARCHAR" property="departmentId"/>
+        <association property="departmentName" column="departmentId"
+                     select="com.jiao.testproject.testproject.dao.departmentMapper."/>
+    </resultMap>
+
+<!-- 级联查询    多对一 -->
+    <resultMap id="getDepartmentInfoAndEmpee" type="com.jiao.testproject.testproject.dto.pojo.Department">
+        <result column="departmentId" jdbcType="VARCHAR" property="departmentId" />
+        <result column="departmentName" jdbcType="VARCHAR" property="departmentName" />
+        <collection property="departmentPerson"
+                    ofType="com.jiao.testproject.testproject.dto.pojo.UserInfo"
+                    column="departmentId"
+                    select="com.jiao.testproject.testproject.dao.UserDao.getUserByDepId">
+        </collection>
+    </resultMap>
+
+    <select id="getUserRole"  resultMap="userAndRole">
+        SELECT user_id , user_name , user.role , role.comment FROM `user` inner join role on role.role = user.role
+    </select>
+    <!-- 查询 员工及其部门信息     -->
+<!--    <select id="getUserInfoAndDepartment" resultMap="userInfoAndDepartment">-->
+<!--        select user_id , user_name ,departmentId from user-->
+<!--    </select>-->
+
+    <!-- 得到 部门表及其所有员工   -->
+    <select id="getDepartmentInfoAndEmpee"  resultMap="getDepartmentInfoAndEmpee">
+        select departmentId , departmentName from department
+    </select>
+
+    <select id="getUserByDepId"
+            parameterType="java.lang.Integer"
+            resultType="com.jiao.testproject.testproject.dto.pojo.user">
+       select  * from user  where department = #{id}
+    </select>
+</mapper>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jiao.testproject.testproject.dao.TestMapper">
+    <select id="getInfo" parameterType="com.jiao.testproject.testproject.dto.FileDto" resultType="com.jiao.testproject.testproject.entity.FileEntity">
+        select  * from filelist
+        <where>
+            <if test=" fd.fileId != null and fd.fileId != ''">
+                file_id = #{fd.fileId}
+            </if>
+        </where>
+    </select>
+</mapper>
