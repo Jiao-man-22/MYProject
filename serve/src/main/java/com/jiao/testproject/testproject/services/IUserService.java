@@ -1,10 +1,8 @@
 package com.jiao.testproject.testproject.services;
 
-import com.jiao.testproject.testproject.dto.FolderDto;
 import com.jiao.testproject.testproject.dto.UserDto;
 import com.jiao.testproject.testproject.dto.pojo.UserRole;
 import com.jiao.testproject.testproject.entity.UserEntity;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -51,4 +49,5 @@ public interface IUserService {
     UserEntity getByUsername(String username);
 
 
+    List<UserEntity> exportExcel();
 }

@@ -393,8 +393,13 @@ class TestProjectApplicationTests {
         System.out.println(v1);
         System.out.println(v);
     }
-
-
+                @Test
+        public void test(){
+                    System.out.println( "7%1");
+        System.out.println( 7%1);
+                    System.out.println("1%7");
+        System.out.println( 1%7);
+        }
 
 
 }

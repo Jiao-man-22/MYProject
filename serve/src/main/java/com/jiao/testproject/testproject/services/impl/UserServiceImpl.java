@@ -1,29 +1,24 @@
 package com.jiao.testproject.testproject.services.impl;
 
+import cn.hutool.poi.excel.ExcelUtil;
+import cn.hutool.poi.excel.ExcelWriter;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jiao.testproject.testproject.dao.FileEntityMapper;
 import com.jiao.testproject.testproject.dao.FileEntityRepository;
 import com.jiao.testproject.testproject.dao.UserDao;
 import com.jiao.testproject.testproject.dao.UserRepository;
-import com.jiao.testproject.testproject.dto.FolderDto;
 import com.jiao.testproject.testproject.dto.UserDto;
 import com.jiao.testproject.testproject.dto.pojo.UserRole;
 import com.jiao.testproject.testproject.entity.*;
 import com.jiao.testproject.testproject.entity.QFileEntity;
 import com.jiao.testproject.testproject.entity.QPermissionEntity;
 import com.jiao.testproject.testproject.entity.QUserEntity;
-import com.jiao.testproject.testproject.services.IFileService;
 import com.jiao.testproject.testproject.services.IUserService;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import net.bytebuddy.implementation.bytecode.Throw;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
-import org.springframework.lang.Nullable;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Propagation;
@@ -33,14 +28,10 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.io.File;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /*
 * 用户的crud*/
@@ -306,6 +297,13 @@ public class UserServiceImpl implements IUserService {
            log.info("line 305 ：error ====   "+ e );
         }
         return userByCondition;
+    }
+
+    @Override
+    public List<UserEntity> exportExcel() {
+        UserEntity userEntity = new UserEntity();
+        QueryWrapper<UserEntity> queryWrapper = new QueryWrapper<>(userEntity);
+        return  userDao.selectUserAll();
     }
 
 

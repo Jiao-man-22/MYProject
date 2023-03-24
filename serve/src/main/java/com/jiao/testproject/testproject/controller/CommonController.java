@@ -1,4 +1,10 @@
 package com.jiao.testproject.testproject.controller;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.poi.excel.ExcelUtil;
+import cn.hutool.poi.excel.ExcelWriter;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jiao.testproject.testproject.dao.ICustomerRepository;
 import com.jiao.testproject.testproject.dao.impl.CustomerCrudRepository;
 import com.jiao.testproject.testproject.dto.AjaxResult;
@@ -10,6 +16,7 @@ import com.jiao.testproject.testproject.services.IFileService;
 import com.jiao.testproject.testproject.services.IUserService;
 import com.jiao.testproject.testproject.utils.*;
 import org.apache.commons.lang3.mutable.MutableBoolean;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +27,13 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.text.ParseException;
 
 import java.util.*;
@@ -37,6 +48,8 @@ public class CommonController {
 
     @Autowired
     private IUserService userService;
+
+
 
     @Autowired
     private  IFileService fileService;
@@ -223,15 +236,67 @@ public class CommonController {
         System.out.println("way outer");
     }
 
-    public void test(){
+    @RequestMapping("/testExcelImport")
+    public void testExcelImport(HttpServletResponse httpServletResponse) throws UnsupportedEncodingException {
+
+        List<UserEntity> userEntities = userService.exportExcel();
+        ExcelWriter writer = ExcelUtil.getWriter();
+        //自定义excel标题和列名
+        writer.addHeaderAlias("user_id","用户ID");
+        writer.addHeaderAlias("user_name","用户名");
+        writer.addHeaderAlias("user_password","密码");
+        writer.addHeaderAlias("role","邮箱");
+        writer.addHeaderAlias("status","状态");
+        //合并单元格后的标题行，使用默认标题样式
+        writer.merge(5,"用户基本信息表");
+        writer.renameSheet(0,"用户登录信息");
+        writer.write(userEntities,true);
+        //设置要导出到的sheet
+        ExcelWriter writer2= writer.setSheet("表2");
+        writer2.addHeaderAlias("姓名","姓名___");
+        writer2.addHeaderAlias("年龄","年龄___");
+        writer2.addHeaderAlias("成绩","成绩___");
+        writer2.addHeaderAlias("考试日期","考试日期___");
+        Map<String, Object> row1 = new LinkedHashMap<>();
+        row1.put("姓名", "张三");
+        row1.put("年龄", 23);
+        row1.put("成绩", 88.32);
+        row1.put("是否合格", true);
+        row1.put("考试日期", DateUtil.date());
+
+        Map<String, Object> row2 = new LinkedHashMap<>();
+        row2.put("姓名", "李四");
+        row2.put("年龄", 33);
+        row2.put("成绩", 59.50);
+        row2.put("是否合格", false);
+        row2.put("考试日期", DateUtil.date());
+
+        ArrayList<Map<String, Object>> rowList = CollUtil.newArrayList(row1, row2);
+        writer2.merge(5, "一班成绩单");
+        writer2.write(rowList,true);
+        writer2.writeCellValue(5,3,"总分");
+        writer2.writeCellValue(6,3,"12000");
+        writer.setSheet("表3");
+        httpServletResponse.setContentType("application/vnd.ms-excel;charset=utf-8");
+//name是下载对话框的名称，不支持中文，想用中文名称需要进行utf8编码
+        String excelName = "用户基本信息表";
+//excelName = new String(excelName.getBytes(),"utf-8");
+        excelName = URLEncoder.encode(excelName, "utf-8");
+        httpServletResponse.setHeader("Content-Disposition", "attachment;filename=" + excelName +".xls");
+        //将excel文件信息写入输出流，返回给调用者
+        ServletOutputStream excelOut = null;
+        try {
+            excelOut = httpServletResponse.getOutputStream();
+            writer.flush(excelOut,true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            writer.close();
+        }
+        IoUtil.close(excelOut);
+    }
     }
 
-
-
-
-
-
-}
 
 
 

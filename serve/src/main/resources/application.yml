@@ -38,7 +38,6 @@ spring:
   #    publisher-confirm-type: correlated
   #    publisher-returns: true
 
-
   #数据源
   datasource:
     username: root
@@ -86,3 +85,5 @@ mybatis-plus:
     field-strategy: 2
     #驼峰下划线转换
     db-column-underline: true
+logging:
+  config: classpath:logback-spring.xml

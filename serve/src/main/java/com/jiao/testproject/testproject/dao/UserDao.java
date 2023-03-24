@@ -3,6 +3,7 @@ package com.jiao.testproject.testproject.dao;
 import com.alibaba.fastjson.JSONArray;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jiao.testproject.testproject.dto.SysPermission;
 import com.jiao.testproject.testproject.dto.pojo.Department;
 import com.jiao.testproject.testproject.dto.pojo.UserRole;
@@ -14,7 +15,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 @Mapper
-public interface UserDao {
+public interface UserDao extends BaseMapper {
 
     /*update password*/
     int updatePasswordById(UserEntity userEntity);

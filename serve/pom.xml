@@ -127,6 +127,13 @@
             <version>1.5.19</version>
         </dependency>
 
+        <!--引入easypoi依赖-->
+        <dependency>
+            <groupId>cn.afterturn</groupId>
+            <artifactId>easypoi-base</artifactId>
+            <version>4.1.3</version>
+        </dependency>
+
         <!--java 编码工具        -->
         <dependency>
             <groupId>cn.hutool</groupId>
