@@ -27,21 +27,21 @@ public class TestProjectApplication {
 
     public static void main(String[] args) throws InterruptedException {
         SpringApplication.run(TestProjectApplication.class, args);
-        System.out.println("dubbo service started");
-        new CountDownLatch(1).await();
+        //System.out.println("dubbo service started");
+        //new CountDownLatch(1).await();
     }
 
-    @Bean
-    public ConfigurableServletWebServerFactory webServerFactory() {
-        TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
-        factory.addConnectorCustomizers(new TomcatConnectorCustomizer() {
-            @Override
-            public void customize(Connector connector) {
-                connector.setProperty("relaxedQueryChars", "|{}[]");
-            }
-        });
-        return factory;
-    }
+//    @Bean
+//    public ConfigurableServletWebServerFactory webServerFactory() {
+//        TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
+//        factory.addConnectorCustomizers(new TomcatConnectorCustomizer() {
+//            @Override
+//            public void customize(Connector connector) {
+//                connector.setProperty("relaxedQueryChars", "|{}[]");
+//            }
+//        });
+//        return factory;
+//    }
     //JPAQueryFactory 加入 spring 容器
     @Bean
     public JPAQueryFactory jpaQueryFactory(@Autowired EntityManager entityManager) {
@@ -51,16 +51,16 @@ public class TestProjectApplication {
 
 
     // 加入分页拦截
-    @Bean
-    public MybatisPlusInterceptor mybatisPlusInterceptor() {
-        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-        PaginationInnerInterceptor paginationInnerInterceptor = new PaginationInnerInterceptor();
-        // 对于单一数据库类型来说,都建议配置DbType值,避免每次分页都去抓取数据库类型
-        paginationInnerInterceptor.setDbType(DbType.MYSQL);
-        // 将分页插件加入MyBatis-Plus的插件链
-        interceptor.addInnerInterceptor(paginationInnerInterceptor);
-        return interceptor;
-    }
+//    @Bean
+//    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+//        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+//        PaginationInnerInterceptor paginationInnerInterceptor = new PaginationInnerInterceptor();
+//        // 对于单一数据库类型来说,都建议配置DbType值,避免每次分页都去抓取数据库类型
+//        paginationInnerInterceptor.setDbType(DbType.MYSQL);
+//        // 将分页插件加入MyBatis-Plus的插件链
+//        interceptor.addInnerInterceptor(paginationInnerInterceptor);
+//        return interceptor;
+//    }
 
 
 

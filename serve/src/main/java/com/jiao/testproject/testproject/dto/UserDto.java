@@ -13,8 +13,11 @@ public class UserDto implements Serializable {
     private String password;
     // 0 :是 普通 1：admin
     private Integer role;
+    //:q
     //0:存在  1：逻辑删除
     private Integer status;
+    // 打印 hello world
+
 
 
 

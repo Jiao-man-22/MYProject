@@ -107,7 +107,7 @@ export default {
                 this.$store.state.userdata.user_role=res.data.data.role
 
                 //this.$store.getter.getUser()
-                if(res.data.code===200 && res.data.data.role === 1){
+                if(res.data.code === 200 && res.data.data.role === 1){
                 this.$message("登陆成功")
                 this.$router.push({
                     path :'/userhomepage',
@@ -128,8 +128,12 @@ export default {
                         role:res.data.data.role,
                         status:res.data.data.status
                     }
-                });
-                }else{
+                }); // 写 一个 博客页面 
+                } else if(res.data.data.role === 3 ){
+                    console.log("跳转博客方法进入");
+                    this.$router.push('/blogmainpage')
+                }
+                    else{
                      this.$message("登陆失败")
                 }
             }
