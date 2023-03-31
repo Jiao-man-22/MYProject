@@ -3,16 +3,17 @@ import App from './App.vue'
 import router from './router'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+// import { createApp } from 'vue';
+// import { Col, Row } from 'vant';
+
 //在main.js中引入 axios
 import axios from 'axios'
 // import Sortable from "sortablejs";
 
-
-
 import store from './store/store'
 // import storage from './store/storage'
 
-axios.defaults.baseURL='http://192.168.137.1:8083'
+axios.defaults.baseURL='http://192.168.1.9:8083'
 import VueContextMenu from 'vue-contextmenu'
 Vue.use(VueContextMenu)
 

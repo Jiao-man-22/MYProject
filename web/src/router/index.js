@@ -10,6 +10,8 @@ import CommonUserHomePage from '../views/CommonUserHomePage.vue'
 import userFileView from '../component_new/userFileView.vue'
 import modifyuserpage from '../views/modifyUserpage.vue'
 import filelookview from '../component_new/FileLookView.vue'
+import blogmainpage from '../views/BlogsMainPage.vue'
+
 
 Vue.use(VueRouter)
 
@@ -77,6 +79,11 @@ const routes = [
   {
     path:'/modifyuserpage',
     component:modifyuserpage,
+  },
+  // 跳转到 博客页面 
+  {
+    path:'/blogmainpage',
+    component:blogmainpage,
   }
 
 
