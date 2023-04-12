@@ -36,8 +36,9 @@ import java.util.stream.Collectors;
 /*
 * 用户的crud*/
 @EnableTransactionManagement
+//@Service("myUserService")
 @Service
-public class UserServiceImpl implements IUserService {
+public class UserServiceImpl  implements IUserService {
 
     private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 

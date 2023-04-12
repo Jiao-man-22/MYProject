@@ -6,6 +6,7 @@ import com.jiao.testproject.testproject.entity.UserEntity;
 import com.jiao.testproject.testproject.services.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -35,6 +36,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
     //自定义关于User的业务
     @Autowired
+//    @Qualifier("myUserService")
     private IUserService userService;
 
     @Resource

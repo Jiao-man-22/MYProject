@@ -5,12 +5,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @EqualsAndHashCode
 @Entity //告诉JPA这是一个实体类（和数据表映射的类）
 @Table(name = "user")
-public class UserEntity {
+public class UserEntity implements Serializable {
 
     @Id //这是一个主键
     @GeneratedValue(strategy = GenerationType.IDENTITY)//自增主键

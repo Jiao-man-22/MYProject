@@ -1,25 +1,38 @@
 package com.jiao.testproject.testproject.controller;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.NumberUtil;
+import cn.hutool.core.util.RandomUtil;
 import com.jiao.testproject.testproject.dao.UserDao;
 import com.jiao.testproject.testproject.dto.AjaxResult;
 import com.jiao.testproject.testproject.dto.UserDto;
 import com.jiao.testproject.testproject.dto.pojo.Department;
 import com.jiao.testproject.testproject.dto.pojo.UserRole;
 import com.jiao.testproject.testproject.entity.UserEntity;
+import com.jiao.testproject.testproject.services.IRegisterService;
 import com.jiao.testproject.testproject.services.IUserService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin
 @RequestMapping("/user")
+@Log4j2
 public class UserController {
     @Autowired
     private IUserService UserService;
+
+    @Autowired
+    private IRegisterService registerService;
 
     private static final Integer integer_0 = 0;
     private static final Integer integer_1 = 1;
@@ -119,6 +132,75 @@ public class UserController {
     public AjaxResult getUserByDepId(){
         Department departmentInfoAndEmpee = userDao.getDepartmentInfoAndEmpee();
         return AjaxResult.success("成功",departmentInfoAndEmpee);
+    }
+
+    /**
+    * @Description:  查询不同角色的用户
+    * @Param:
+    * @return:
+    * @Author: JRJ
+    * @Date: 2023/4/10
+    */
+    @GetMapping("/getUserDetails")
+    public AjaxResult getUserDetails(){
+        List<Map<Object, Object>> userDetails = userDao.getUserDetails();
+
+        // 存放 list map中 所有的 key 为 rolecode 的 值
+        Set<String> queryPattern = new HashSet<>();
+        //存放要返回的数据
+        List<Map<Object, Object>> webData = new ArrayList<>();
+
+        userDetails.stream().forEach(map -> {
+            String roleCode = (String) map.get("roleCode");
+            queryPattern.add(roleCode);
+        });
+
+        AtomicInteger count = new AtomicInteger();
+        queryPattern.stream().forEach( condition ->{
+            System.out.println("--内部循环次数 -- " + count.incrementAndGet() + "匹配条件" + condition );
+            List<Map<Object, Object>> collect = userDetails.stream()
+                    .filter(x -> {
+                        if (condition.equals(x.get("roleCode"))){
+                            return true;
+                        }else {
+                            return false;
+                        }
+
+                    })
+                    .collect(Collectors.toList());
+            System.out.println("打印每次 过滤过 后的 list " );
+            collect.stream().forEach(System.out::println);
+            webData.addAll(collect);
+        });
+        System.out.println("分组后的数据 " );
+        webData.stream().forEach(System.out::println);
+
+        return AjaxResult.success("成功",webData);
+    }
+
+    @GetMapping("/getUserDetailsCount")
+    public AjaxResult getUserDetailsCount(){
+        List<Map<Object, Object>> userRoleCount = userDao.getUserRoleCount();
+        return AjaxResult.success("成功",userRoleCount);
+    }
+    //新建用户
+    @PostMapping("/registerAccount")
+    public AjaxResult registerAccount(UserDto ud){
+
+        boolean flag;
+        int uuid;
+       do{
+           uuid = RandomUtil.randomInt(100, 200);
+           UserEntity user2 = registerService.getById(uuid);
+           if (user2 == null) flag =  false;else flag = true;
+       } while(flag);
+
+        UserEntity ue = new UserEntity();
+        ue.setCreate_time(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now()));
+        ue.setUser_id(uuid);
+        BeanUtil.copyProperties(ud,ue);
+        boolean save = registerService.save(ue);
+        return AjaxResult.success("成功",save);
     }
 
 }

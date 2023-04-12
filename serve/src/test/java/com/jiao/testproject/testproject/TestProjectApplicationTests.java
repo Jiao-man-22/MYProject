@@ -1,13 +1,17 @@
 package com.jiao.testproject.testproject;
 import cn.hutool.core.lang.func.VoidFunc0;
+import cn.hutool.core.util.RandomUtil;
+import com.jiao.testproject.testproject.dao.UserDao;
 import com.jiao.testproject.testproject.dao.impl.CustomerCrudRepository;
 import com.jiao.testproject.testproject.dto.FileViewVo;
 import com.jiao.testproject.testproject.dto.FolderDto;
 import com.jiao.testproject.testproject.dto.Node;
 import com.jiao.testproject.testproject.entity.FileEntity;
+import com.jiao.testproject.testproject.entity.UserEntity;
 import com.jiao.testproject.testproject.test.CasTest;
 import com.jiao.testproject.testproject.test.LambdaQs;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
@@ -28,7 +32,8 @@ import java.util.stream.Collectors;
 class TestProjectApplicationTests {
     @Resource
     CustomerCrudRepository customerCrudRepository;
-
+    @Resource
+    UserDao userDao;
     @Test
     void contextLoads() throws InstantiationException, IllegalAccessException {
 
@@ -401,5 +406,21 @@ class TestProjectApplicationTests {
         System.out.println( 1%7);
         }
 
+        public  void test1(){
+        String s = "123";
+        }
 
+        @Test
+        public  void test2(){
+            for (int i = 0; i < 20; i++) {
+                System.out.println("limit "+RandomUtil.randomInt(1000));
+                System.out.println(RandomUtil.randomInt(0,100));
+            }
+    }
+
+    @Test
+    public  void test3(){
+        UserEntity userEntity = userDao.selectById(1l);
+        System.out.println(userEntity.toString());
+    }
 }

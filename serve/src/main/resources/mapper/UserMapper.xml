@@ -106,6 +106,33 @@
         ORDER BY
             role.user_role ASC
     </select>
+    <select id="getUserDetails" resultType="java.util.Map">
+        SELECT
+            t1.user_id userId,
+            t1.user_password userPass,
+            t1.sex,
+            t1.department,
+            t1.create_time userCreateTIme,
+            t1.update_time userUpdateTIme,
+            t2.role_name roleName,
+            t2.role_code roleCode,
+            t2.create_time roleCreateTime
+        FROM
+            USER t1
+                INNER JOIN role t2 ON t1.role_code = t2.role_code
+        ORDER BY
+            userCreateTIme DESC,
+            userUpdateTIme DESC
+    </select>
+
+    <select id="getUserRoleCount" resultType="java.util.Map">
+        SELECT
+            t2.role_code rodeCode ,t2.role_name roleName,count(1) count
+        FROM
+            USER t1
+            INNER JOIN role t2 ON t1.role_code = t2.role_code
+        GROUP BY t2.role_code
+    </select>
 
 
 </mapper>

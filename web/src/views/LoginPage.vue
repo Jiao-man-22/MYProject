@@ -26,6 +26,8 @@
             <el-form-item class="btns">
              <el-button type="primary" @click="p_login_form(login_form)">登陆</el-button>
              <el-button type="info" @click="reset_form">重置</el-button>
+             <el-button type="danger" @click="toRegisterPage">注册</el-button>
+             <el-button type="warning" @click="reset_form">忘记密码</el-button>
             </el-form-item>
           </el-form>
       </div>
@@ -138,6 +140,11 @@ export default {
                 }
             }
             )  
+        },
+        //跳转到注册页面
+        toRegisterPage(){
+            console.log("跳转到注册页面");
+            this.$router.push('/registerPage')
         }
     }
 }
@@ -148,7 +155,6 @@ export default {
 .Login_1_container{
     background-color: #253145;
     height: 100%;
-    
 }
 .Login_1_box{
     width: 450px;

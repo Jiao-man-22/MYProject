@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.apache.catalina.connector.Connector;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,6 +24,7 @@ import java.util.concurrent.CountDownLatch;
 @SpringBootApplication
 @EnableConfigurationProperties
 @EnableDubbo(scanBasePackages = {"com.jiao.testproject.testproject.services"})
+@MapperScan
 public class TestProjectApplication {
 
     public static void main(String[] args) throws InterruptedException {

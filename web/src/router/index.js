@@ -11,6 +11,7 @@ import userFileView from '../component_new/userFileView.vue'
 import modifyuserpage from '../views/modifyUserpage.vue'
 import filelookview from '../component_new/FileLookView.vue'
 import blogmainpage from '../views/BlogsMainPage.vue'
+import RegisterPage from '../views/RegisterPage.vue'
 
 
 Vue.use(VueRouter)
@@ -84,8 +85,14 @@ const routes = [
   {
     path:'/blogmainpage',
     component:blogmainpage,
-  }
+  },
 
+    // 跳转到 注册页面  
+    {
+      path:'/registerPage',
+      component:RegisterPage,
+    }
+  
 
 ]
 

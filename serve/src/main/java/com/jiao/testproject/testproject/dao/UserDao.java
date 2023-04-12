@@ -1,21 +1,21 @@
 package com.jiao.testproject.testproject.dao;
 
-import com.alibaba.fastjson.JSONArray;
-
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jiao.testproject.testproject.dto.SysPermission;
 import com.jiao.testproject.testproject.dto.pojo.Department;
 import com.jiao.testproject.testproject.dto.pojo.UserRole;
 import com.jiao.testproject.testproject.dto.pojo.user;
+
 import com.jiao.testproject.testproject.entity.UserEntity;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
-public interface UserDao extends BaseMapper {
+public interface UserDao extends BaseMapper<UserEntity> {
 
     /*update password*/
     int updatePasswordById(UserEntity userEntity);
@@ -63,7 +63,10 @@ public interface UserDao extends BaseMapper {
 
     List<SysPermission> getUserPermission(String userId);
 
+    @MapKey("userId")
+    List<Map<Object, Object> >getUserDetails();
 
-
+    @MapKey("rodeCode")
+    List<Map<Object, Object> >getUserRoleCount();
 
 }
