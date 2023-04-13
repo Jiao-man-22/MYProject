@@ -11,7 +11,7 @@ public interface SysConstants {
     // 邮件服务器
     Map<String, MailAccountSon> SYS_EMAIL_MAP = new HashMap<String, MailAccountSon>() {{
 //        put(EMAIL_126,new MailAccountSon("zhangxuewei0303@126.com","CTLTO***K****J") );
-        put(EMAIL_qq,new MailAccountSon("2935996123@qq.com","nhtxcimazypodgdd") );
+        put(EMAIL_qq,new MailAccountSon("2935996123@qq.com","nhtx*****d") );
     }};
 
 }

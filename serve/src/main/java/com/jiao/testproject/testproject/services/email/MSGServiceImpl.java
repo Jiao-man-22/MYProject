@@ -21,9 +21,9 @@ public class MSGServiceImpl implements MSGService {
         //下面导包看着点，千万别导错了，对着上面我的导包
         Config config = new Config()
                 // 您的AccessKey ID
-                .setAccessKeyId("LTAI5tN1NqYyarq5eEj9a9Ji")
+                .setAccessKeyId("**********")
                 // 您的AccessKey Secret	（这两个还不知道的去我前两次关于阿里云的有教程哪里找）
-                .setAccessKeySecret("PTvuZy06aWaaWIygmYXMdbyP6GuxIr");
+                .setAccessKeySecret("***********");
         // 访问的域名（这个不用变都是这个）
         config.endpoint = "dysmsapi.aliyuncs.com";
         Client client = null;
