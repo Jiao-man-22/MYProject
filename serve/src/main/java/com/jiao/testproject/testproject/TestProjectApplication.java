@@ -20,11 +20,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.persistence.EntityManager;
 import java.util.concurrent.CountDownLatch;
 
-@EnableTransactionManagement
-@SpringBootApplication
 @EnableConfigurationProperties
 @EnableDubbo(scanBasePackages = {"com.jiao.testproject.testproject.services"})
-@MapperScan
+@MapperScan("com.jiao.testproject.testproject.dao")
+@EnableTransactionManagement
+@SpringBootApplication
 public class TestProjectApplication {
 
     public static void main(String[] args) throws InterruptedException {

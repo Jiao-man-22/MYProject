@@ -1,6 +1,9 @@
 package com.jiao.testproject.testproject.entity;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,12 +14,14 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @Entity //告诉JPA这是一个实体类（和数据表映射的类）
 @Table(name = "user")
+@TableName("user")
 public class UserEntity implements Serializable {
 
     @Id //这是一个主键
     @GeneratedValue(strategy = GenerationType.IDENTITY)//自增主键
     @Column(name = "user_id")
     @Excel(name = "user_id")
+    @TableId(type = IdType.ASSIGN_ID)
     private Integer user_id;
 
     @Excel(name = "user_name")

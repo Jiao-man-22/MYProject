@@ -1,5 +1,6 @@
 package com.jiao.testproject.testproject.dao;
 
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jiao.testproject.testproject.dto.SysPermission;
 import com.jiao.testproject.testproject.dto.pojo.Department;

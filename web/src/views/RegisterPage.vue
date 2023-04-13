@@ -3,7 +3,7 @@
     <div id="gen" class="image-defined">
         <!-- <div class="head">头部</div>
         <div class="nav"> 导航</div> -->
-        <div class="register-wrapper">
+      <div class="register-wrapper">
       <div id="register">
         <p class="title"> 注册</p>
         <el-form
@@ -12,32 +12,34 @@
           label-position="left"
           label-width="40px"
           class="demo-ruleForm"
+          :model="regsiterForm"
+          :rules="ruleForm"
         >
-          <el-form-item prop="tel">
-            <el-input  class="width-define" auto-complete="off" placeholder="请输入手机号"></el-input>
+          <el-form-item  prop="iphone">
+            <el-input  class="width-define" auto-complete="off" placeholder="请输入手机号" v-model="regsiterForm.iphone" oninput="value=value.replace(/^\.+|[^\d.]/g,'')"></el-input>
           </el-form-item>
 
-          <el-form-item prop="smscode" class="code">
-            <el-input placeholder="验证码" style="width: 250px;"></el-input>
+          <el-form-item class="code" prop="code">
+            <el-input v-model="regsiterForm.code" placeholder="验证码" style="width: 250px;" oninput="value=value.replace(/^\.+|[^\d.]/g,'')"></el-input>
             <el-button
               type="primary"
               class="bt1"
               >{{ buttonText }}</el-button
             >
           </el-form-item>
-          <el-form-item prop="pass">
+          <el-form-item  prop="password">
             <el-input class="width-define"
               type="password"
-              v-model="ruleForm2.pass"
+              v-model="regsiterForm.password"
               auto-complete="off"
               placeholder="输入密码"
             ></el-input>
           </el-form-item>
-          <el-form-item prop="checkPass">
+          <el-form-item  prop="checkPass">
             <el-input
               class="width-define"
               type="password"
-              v-model="ruleForm2.checkPass"
+              v-model="regsiterForm.checkPass"
               auto-complete="off"
               placeholder="确认密码"
             ></el-input>
@@ -45,7 +47,7 @@
           <el-form-item>
             <el-button
               type="primary"
-              @click="submitForm('ruleForm2')"
+              @click="submitForm('regsiterForm')"
               style="width:80%;"
               >注册</el-button
             >
@@ -109,9 +111,34 @@ export default {
     name:"register",
     data(){
         return {
-            ruleForm2:{},
+            regsiterForm:{
+              iphone:'15312487946',
+              code:1234,
+              password:123456,
+              checkPass:123456
+            },
+            ruleForm:{
+              iphone:[
+              { required: true, message: '请输入手机号', trigger: 'blur' },
+              { len:11, message: '需要11位数字', trigger: 'blur' }
+            ], 
+            code:[
+            { required: true, message: '请输入验证码', trigger: 'blur' },
+            ],
+            password:[
+            { required: true, message: '请输入密码', trigger: 'blur' },
+            ],
+            checkPass:[
+            { required: true, message: '请确认密码', trigger: 'blur' },
+            ]
+            },
             buttonText:'发送验证'
         }
+    },
+    methods:{
+      gotoLogin(){
+        console.log("gotoLogin")
+      }
     }
 }
 </script>

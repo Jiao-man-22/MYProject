@@ -11,12 +11,15 @@ import com.jiao.testproject.testproject.dto.pojo.UserRole;
 import com.jiao.testproject.testproject.entity.UserEntity;
 import com.jiao.testproject.testproject.services.IRegisterService;
 import com.jiao.testproject.testproject.services.IUserService;
+import com.jiao.testproject.testproject.services.email.MSGService;
+import com.jiao.testproject.testproject.utils.RandomUtils;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -33,6 +36,9 @@ public class UserController {
 
     @Autowired
     private IRegisterService registerService;
+
+    @Autowired
+    private MSGService msgService;
 
     private static final Integer integer_0 = 0;
     private static final Integer integer_1 = 1;
@@ -191,16 +197,32 @@ public class UserController {
         int uuid;
        do{
            uuid = RandomUtil.randomInt(100, 200);
-           UserEntity user2 = registerService.getById(uuid);
+           Serializable userId = Integer.valueOf(uuid);
+           UserEntity user2 = registerService.getById(userId);
            if (user2 == null) flag =  false;else flag = true;
        } while(flag);
 
         UserEntity ue = new UserEntity();
-        ue.setCreate_time(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now()));
+//        LocalDateTime now = LocalDateTime.now();
+//        String format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(now);
+        ue.setCreate_time(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date()));
         ue.setUser_id(uuid);
-        BeanUtil.copyProperties(ud,ue);
+//        BeanUtil.copyProperties(ud,ue);
+        ue.setUser_name(ud.getUserName());
+        ue.setUser_password(ud.getPassword());
+        ue.setStatus(ud.getStatus());
+        ue.setRole(ud.getRole());
         boolean save = registerService.save(ue);
         return AjaxResult.success("成功",save);
+    }
+
+    @GetMapping("send/{phone}/interAspect")
+    public void sendMsm(@PathVariable String phone){
+        //生成随机数
+        String code = RandomUtils.getFourBitRandom();
+        Map map = new HashMap();
+        map.put("code",code);
+        boolean b = msgService.send(map,phone);
     }
 
 }
