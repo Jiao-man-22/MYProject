@@ -70,4 +70,8 @@ public interface UserDao extends BaseMapper<UserEntity> {
     @MapKey("rodeCode")
     List<Map<Object, Object> >getUserRoleCount();
 
+    @MapKey("user_id")
+    List<Map<String, UserEntity> >getUserMap();
+
+
 }

@@ -134,5 +134,18 @@
         GROUP BY t2.role_code
     </select>
 
+<!--    返回 List<Map<String,Object>-->
+    <resultMap id="mapUserDto" type="com.jiao.testproject.testproject.entity.UserEntity">
+        <result column="user_id" property="user_id"></result>
+        <result column="user_name" property="user_name"></result>
+        <result column="role" property="role"></result>
+        <result column="create_time" property="create_time"></result>
+        <result column="update_time" property="update_time"></result>
+    </resultMap>
+
+    <select id="getUserMap" resultMap="mapUserDto">
+        select * from user
+    </select>
+
 
 </mapper>
