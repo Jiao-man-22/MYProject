@@ -2,10 +2,11 @@ package com.jiao.testproject.testproject.controller;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.IoUtil;
-import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.jiao.testproject.testproject.dao.ICustomerRepository;
+import cn.hutool.poi.excel.ExcelReader;
+import cn.hutool.poi.excel.ExcelUtil;
+
+import com.jiao.testproject.testproject.dao.ICustomerRepository;;
 import com.jiao.testproject.testproject.dao.impl.CustomerCrudRepository;
 import com.jiao.testproject.testproject.dto.AjaxResult;
 import com.jiao.testproject.testproject.dto.FileDto;
@@ -13,10 +14,11 @@ import com.jiao.testproject.testproject.dto.UserDto;
 import com.jiao.testproject.testproject.dto.UserDtoVo;
 import com.jiao.testproject.testproject.entity.*;
 import com.jiao.testproject.testproject.services.IFileService;
+import com.jiao.testproject.testproject.services.IRegisterService;
 import com.jiao.testproject.testproject.services.IUserService;
 import com.jiao.testproject.testproject.utils.*;
 import org.apache.commons.lang3.mutable.MutableBoolean;
-import org.apache.poi.ss.usermodel.Sheet;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
@@ -49,6 +52,8 @@ public class CommonController {
     @Autowired
     private IUserService userService;
 
+    @Autowired
+    private IRegisterService registerService;
 
 
     @Autowired
@@ -294,6 +299,40 @@ public class CommonController {
             writer.close();
         }
         IoUtil.close(excelOut);
+    }
+
+//    解析导入的execl
+    @PostMapping("/importExcel")
+    @Transactional(rollbackFor = Exception.class)
+    public void importExcel(@RequestPart("file") MultipartFile file){
+      //将文件打成io
+        InputStream inputStream = null;
+        try {
+            inputStream = file.getInputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //指定输入流和sheet
+        ExcelReader reader = ExcelUtil.getReader(inputStream, 0);
+        // 读取第二行到最后一行数据
+        List<List<Object>> read = reader.read(1, reader.getRowCount());
+        List<UserEntity> userEntities = new ArrayList<>();
+        for (List<Object> list: read) {
+            UserEntity userEntity = new UserEntity();
+            Integer o = Integer.parseInt(String.valueOf(list.get(0)));//读取某行第一列数据 顺着取到 N 列
+            String o1 = (String) list.get(1);
+            String o2 = (String) list.get(2);
+            Integer o3 = Integer.parseInt(String.valueOf(list.get(3))) ;
+            String o4 = list.get(4) +"";
+            userEntity.setUser_id(o);
+            userEntity.setUser_password((String)o1);
+            userEntity.setUser_name((String) o2 );
+            userEntity.setRole((Integer) o3 );
+            userEntity.setCreate_time((String) o4 );
+            userEntities.add(userEntity);
+        }
+        boolean b = registerService.saveBatch(userEntities);
+        System.out.println(" 批量导入 "+ b );
     }
     }
 
