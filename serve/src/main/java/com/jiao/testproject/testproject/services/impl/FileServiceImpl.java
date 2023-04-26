@@ -144,16 +144,18 @@ public class  FileServiceImpl extends ServiceImpl<FileEntityMapper , FileEntity>
     }
 
     @Override
-    public List<FileDto> selectFiles() {
+    public List<FileDto> selectFiles(String pageSize ,String pageNum , String role ) {
         ArrayList<FileDto> fileDtos = new ArrayList<>();
         QFileEntity fileEntity = QFileEntity.fileEntity;
        // List<Tuple> fetch = queryFactory.select().from(fileEntity).fetch();
+        Page<FileEntity> pageHelper = new Page<FileEntity>(Long.valueOf(pageSize),Long.valueOf(pageNum));
 
-        List<FileEntity> fileEntities = FileEntityMapper.selectByExample(new FileEntityExample());
-        if (fileEntities == null || fileEntities.size()< 1 ){
+        //List<FileEntity> fileEntities = FileEntityMapper.selectByExample(new FileEntityExample());
+        Page<FileEntity> PageList = FileEntityMapper.selectListPaged(pageHelper);
+        if (PageList == null || PageList.getRecords().size()< 1 ){
             return null;
         }
-        for (FileEntity fe:fileEntities) {
+        for (FileEntity fe:PageList.getRecords()) {
             this.setSuffix(fe.getFileSize(),fe);
             FileDto fileDto = new FileDto();
             try{

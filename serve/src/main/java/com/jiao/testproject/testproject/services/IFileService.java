@@ -20,7 +20,7 @@ public interface IFileService extends IService<FileEntity> {
     int insertFileById(FileDto fileDto);
 
     /*检索文件*/
-    List<FileDto> selectFiles();
+    List<FileDto> selectFiles(String pageSize , String pageNum , String role );
 
     List<FileEntity> selectFileByUserId(Integer uesrId);
 

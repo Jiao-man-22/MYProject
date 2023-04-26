@@ -156,9 +156,11 @@ public class FileController {
 
     /*查询所有文件*/
     @GetMapping("/getAllFilesByAdmin")
-    public AjaxResult getAllFilesByAdmin(@RequestParam(required = false) String role){
+    public AjaxResult getAllFilesByAdmin(@RequestParam(required = false ,defaultValue = "1") String pageSize ,
+                                         @RequestParam(required = false ,defaultValue = "10")  String pageNum ,
+                                         @RequestParam(required = false) String role){
 
-            List<FileDto> fileDtos = fileService.selectFiles();
+            List<FileDto> fileDtos = fileService.selectFiles(pageSize,pageNum,role) ;
             if (fileDtos == null || fileDtos.size() < 1) {
                 return AjaxResult.success("集合为空", fileDtos);
             }

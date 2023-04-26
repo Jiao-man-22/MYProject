@@ -13,7 +13,7 @@ import axios from 'axios'
 import store from './store/store'
 // import storage from './store/storage'
 
-axios.defaults.baseURL='http://192.168.1.17:8083'
+axios.defaults.baseURL='http://192.168.101.17:8083'
 import VueContextMenu from 'vue-contextmenu'
 Vue.use(VueContextMenu)
 

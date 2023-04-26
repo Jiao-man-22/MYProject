@@ -5,7 +5,6 @@
       <el-submenu index="1">
         <template slot="title"><i class="el-icon-message"></i>用户管理</template>
         <el-menu-item-group>
-          <template slot="title">用户</template>
           <el-menu-item @click="updatePsd()">修改密码</el-menu-item>
            <el-menu-item @click="loginOut()">注销登录</el-menu-item>
         </el-menu-item-group>

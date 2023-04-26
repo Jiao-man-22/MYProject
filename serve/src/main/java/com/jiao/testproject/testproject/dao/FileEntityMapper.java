@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jiao.testproject.testproject.dto.FileDto;
 import com.jiao.testproject.testproject.entity.FileEntity;
 import com.jiao.testproject.testproject.entity.FileEntityExample;
@@ -111,4 +112,6 @@ public interface FileEntityMapper extends BaseMapper<FileEntity> {
 
     @MapKey("id")
     Map getMapList();
+
+    Page<FileEntity> selectListPaged(Page<FileEntity> page);
 }
