@@ -12,6 +12,7 @@ import modifyuserpage from '../views/modifyUserpage.vue'
 import filelookview from '../component_new/FileLookView.vue'
 import blogmainpage from '../views/BlogsMainPage.vue'
 import RegisterPage from '../views/RegisterPage.vue'
+import videoPage from '../component_new/videoPage.vue'
 
 
 Vue.use(VueRouter)
@@ -91,8 +92,13 @@ const routes = [
     {
       path:'/registerPage',
       component:RegisterPage,
-    }
-  
+    },
+      // 跳转到视频播放 页面  
+      {
+        path:'/videoPage',
+        component:videoPage,
+      }
+    
 
 ]
 

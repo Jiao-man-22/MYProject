@@ -70,3 +70,8 @@ mybatis-plus:
       table-underline: true
 logging:
   config: classpath:logback-spring.xml
+pagehelper:
+#  dialect: mysql 弃用
+  helper-dialect: mysql
+  support-methods-arguments: true
+  params: countSql

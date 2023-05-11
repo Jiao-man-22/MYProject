@@ -1,5 +1,8 @@
 package com.jiao.testproject.testproject.demo;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.jiao.testproject.testproject.dao.UserDao;
 import com.jiao.testproject.testproject.dto.AjaxResult;
 import com.jiao.testproject.testproject.dto.FolderDto;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,5 +33,19 @@ public class TestController {
         });
         });
         return AjaxResult.success(userMap);
+    }
+
+    /*测试pageHelper分页*/
+    @PostMapping("/getPage")
+    public AjaxResult getPage(){
+        PageHelper.startPage(1,10);
+        List<UserEntity> userEntities = userDao.selectUserAll();
+        PageInfo<UserEntity> userEntityPageInfo = new PageInfo<>(userEntities);
+        long total = userEntityPageInfo.getTotal();
+        HashMap<Object, Object> objectObjectHashMap = new HashMap<>();
+        objectObjectHashMap.put("count" ,total);
+        objectObjectHashMap.put("pageData",userEntityPageInfo);
+        objectObjectHashMap.put("commonData",userEntities);
+        return AjaxResult.success(objectObjectHashMap);
     }
 }
