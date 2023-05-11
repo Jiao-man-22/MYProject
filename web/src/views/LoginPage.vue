@@ -28,6 +28,7 @@
              <el-button type="info" @click="reset_form">重置</el-button>
              <el-button type="danger" @click="toRegisterPage">注册</el-button>
              <el-button type="warning" @click="reset_form">忘记密码</el-button>
+             <el-button type="warning" @click="toVideoPage">视频播放</el-button>
             </el-form-item>
           </el-form>
       </div>
@@ -145,6 +146,11 @@ export default {
         toRegisterPage(){
             console.log("跳转到注册页面");
             this.$router.push('/registerPage')
+        },
+
+        toVideoPage(){
+            console.log("视频播放");
+            this.$router.push('/videoPage')
         }
     }
 }
