@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jiao.testproject.testproject.dao.UserDao;
+import com.jiao.testproject.testproject.demo.excel.IExcelService;
 import com.jiao.testproject.testproject.dto.AjaxResult;
 import com.jiao.testproject.testproject.dto.FolderDto;
 import com.jiao.testproject.testproject.entity.UserEntity;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +26,9 @@ public class TestController {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private IExcelService excelService;
 
     @PostMapping("/getUserMap")
     public AjaxResult geUserMap(){
@@ -47,5 +53,13 @@ public class TestController {
         objectObjectHashMap.put("pageData",userEntityPageInfo);
         objectObjectHashMap.put("commonData",userEntities);
         return AjaxResult.success(objectObjectHashMap);
+    }
+
+//    大数据量的 execl导出 和 导入
+@PostMapping("/exportBigExcel")
+    public void exportBigExcel(HttpServletResponse response){
+
+        OutputStream outputStream = excelService.exportBigExcel(response);
+
     }
 }

@@ -28,6 +28,7 @@ spring:
       shutdown-timeout: 200
 
   #数据源
+#  primary
   datasource:
     username: root
     password: 123456

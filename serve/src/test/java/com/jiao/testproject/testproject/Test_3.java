@@ -2,8 +2,10 @@ package com.jiao.testproject.testproject;
 
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jiao.testproject.testproject.dao.FileEntityMapper;
 import com.jiao.testproject.testproject.entity.FileEntity;
+
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,13 @@ public class Test_3  implements Runnable {
 
     @Autowired
     private FileEntityMapper fileEntityMapper;
+
+
+    @Test
+    public void test4(){
+        List<FileEntity> fileEntities = fileEntityMapper.selectList(new QueryWrapper<>());
+
+    }
 
     @Test
     public void test() {

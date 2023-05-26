@@ -15,6 +15,7 @@ import org.springframework.boot.web.embedded.tomcat.TomcatConnectorCustomizer;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManager;
@@ -24,6 +25,7 @@ import java.util.concurrent.CountDownLatch;
 @EnableDubbo(scanBasePackages = {"com.jiao.testproject.testproject.services"})
 @MapperScan("com.jiao.testproject.testproject.dao")
 @EnableTransactionManagement
+@EnableScheduling // 开启定时任务
 @SpringBootApplication
 public class TestProjectApplication {
 
