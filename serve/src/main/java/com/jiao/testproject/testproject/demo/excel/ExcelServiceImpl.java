@@ -35,61 +35,48 @@ public class ExcelServiceImpl implements IExcelService {
     @Autowired
     private FileEntityMapper fileEntityMapper;
 
+    CountDownLatch cd =new CountDownLatch(3);
+
+    //存放 返回的 excel 数据  多线程集合
+    List<FileEntity> mergerList = Collections.synchronizedList(new ArrayList<>());
+
     @Transactional
     @Override
-    public OutputStream exportBigExcel(HttpServletResponse response) {
+    public OutputStream exportBigExcel(HttpServletResponse response) throws InterruptedException {
         ExecutorService executorService = ThreadUtil.newFixedExecutor(3,"fixed",false );
         List<Future<?>> futures = new ArrayList<>();
         AtomicInteger atoInt = new AtomicInteger(0);
         AtomicInteger atoCount  = new AtomicInteger(0);
-        //存放 返回的 excel 数据  多线程集合
-        final List<FileEntity> mergerList = Collections.synchronizedList(new ArrayList<>());
-
-        Callable<List<FileEntity>> callable_1 = new Callable<List<FileEntity>>() {
-
-            @Override
-            public List<FileEntity> call() throws Exception {
-
-                return null;
-            }
-        };
-
-        Callable<List<FileEntity>> callable_2 = new Callable<List<FileEntity>>() {
-
-            @Override
-            public List<FileEntity> call() throws Exception {
-                return null;
-            }
-        };
-        Callable<List<FileEntity>> callable_3 = new Callable<List<FileEntity>>() {
-
-            @Override
-            public List<FileEntity> call() throws Exception {
-                return null;
-            }
-        };
 
         IntBinaryOperator add = (c,u)-> c + u ;
+//        for (int i = 0; i < 3; i++) {
+//            final int startIndex = i * 10000;
+//
+//            log.info( " \n 打印 第 " + i + " 次 查询 "  + " startIndex 的 value " + startIndex);
+//            futures.add(executorService.submit(new FutureTask<>(new Callable<List<FileEntity>>() {
+//                @Override
+//                public List<FileEntity> call() throws Exception {
+//                    //
+//                    Page<FileEntity> fileEntityPage = fileEntityMapper
+//                            .selectPage(new Page<>(startIndex, 10000),
+//                                    new QueryWrapper<FileEntity>());
+//                    List<FileEntity> records = fileEntityPage.getRecords();
+//                    mergerList.addAll(records);
+//                    log.info("print 代码执行 ============================== " + startIndex);
+//                    return mergerList;
+//                }
+//            })));
+//        }
         for (int i = 0; i < 3; i++) {
-            final int startIndex = i * 10000;
-
-            log.info( " \n 打印 第 " + i + " 次 查询 "  + " startIndex 的 value " + startIndex);
-            futures.add(executorService.submit(new FutureTask<>(new Callable<List<FileEntity>>() {
-                @Override
-                public List<FileEntity> call() throws Exception {
-                    //
-                    Page<FileEntity> fileEntityPage = fileEntityMapper
-                            .selectPage(new Page<>(startIndex, 10000),
-                                    new QueryWrapper<FileEntity>());
-                    List<FileEntity> records = fileEntityPage.getRecords();
-                    mergerList.addAll(records);
-                    log.info("print 代码执行 ============================== " + startIndex);
-                    return mergerList;
-                }
-            })));
+            //Task task = new Task(fileEntityMapper, i * 10000, cd);
+            CallableTask callableTask = new CallableTask(fileEntityMapper, i * 10000, 10000,cd);
+            futures.add(executorService.submit(callableTask));
         }
-        executorService.shutdown();
         this.waitFinish(futures);
+            //等待其他线程执行完
+            cd.await();
+            executorService.shutdown();
+       // mergerList=Task.getMergerList();
         log.info("=========合计 的 总数据量 ============="+ mergerList.size() + "=========================================="+ "加上 ato的值 " + atoInt);
         OutputStream excelStream = getExcelStream(mergerList, response);
         return excelStream;
@@ -135,7 +122,8 @@ public class ExcelServiceImpl implements IExcelService {
     @SneakyThrows
     private void waitFinish(List<Future<?>> futures) {
         for (Future<?> future : futures) {
-            future.get();
+            List o = (List)future.get();
+            mergerList.addAll(o);
         }
     }
 

@@ -59,7 +59,11 @@ public class TestController {
 @PostMapping("/exportBigExcel")
     public void exportBigExcel(HttpServletResponse response){
 
+    try {
         OutputStream outputStream = excelService.exportBigExcel(response);
-
+    } catch (InterruptedException e) {
+        e.printStackTrace();
     }
+
+}
 }

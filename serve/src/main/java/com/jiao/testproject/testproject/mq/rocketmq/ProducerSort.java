@@ -8,12 +8,17 @@ import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.common.message.MessageQueue;
 import org.apache.rocketmq.remoting.common.RemotingHelper;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 
 public class ProducerSort {
+
+    @Value("${DEFAULT_NAMESRVADDR}")
+    private static int  DEFAULT_NAMESRVADDR ;
     public static void main(String[] args) {
         try {
+            System.out.println(DEFAULT_NAMESRVADDR);
             MQProducer producer = new DefaultMQProducer("please_rename_unique_group_name");
             ((DefaultMQProducer) producer).setNamesrvAddr("192.168.101.84:9876");
             producer.start();

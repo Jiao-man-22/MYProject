@@ -8,6 +8,6 @@ import java.io.OutputStream;
 
 public interface IExcelService {
 
-    OutputStream exportBigExcel(HttpServletResponse response);
+    OutputStream exportBigExcel(HttpServletResponse response) throws InterruptedException;
 
 }

@@ -13,6 +13,7 @@ import com.jiao.testproject.testproject.test.LambdaQs;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.annotation.Resource;
 import java.awt.*;
@@ -34,6 +35,9 @@ class TestProjectApplicationTests {
     CustomerCrudRepository customerCrudRepository;
     @Resource
     UserDao userDao;
+
+    @Autowired
+    private RedisTemplate<String ,Object> redisTemplate;
     @Test
     void contextLoads() throws InstantiationException, IllegalAccessException {
 
@@ -422,5 +426,10 @@ class TestProjectApplicationTests {
     public  void test3(){
         UserEntity userEntity = userDao.selectById(1l);
         System.out.println(userEntity.toString());
+    }
+
+    //redis 存值
+    public void setValue(){
+        redisTemplate.opsForValue().set("61儿童节","6-1");
     }
 }

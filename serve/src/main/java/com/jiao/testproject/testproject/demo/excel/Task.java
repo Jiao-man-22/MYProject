@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+
 @Service
 public class Task implements Runnable{
 
@@ -19,15 +21,35 @@ public class Task implements Runnable{
     //存放 返回的 excel 数据  多线程集合
     private static List<FileEntity> mergerList = Collections.synchronizedList(new ArrayList<>());
 
+    private CountDownLatch cd = null;
+
     private int offset ;
+
+    public Task(FileEntityMapper fileEntityMapper, int offset) {
+        this.fileEntityMapper = fileEntityMapper;
+        this.offset = offset;
+    }
+
+    public Task(FileEntityMapper fileEntityMapper, int offset , CountDownLatch cd) {
+        this.fileEntityMapper = fileEntityMapper;
+        this.cd = cd;
+        this.offset = offset;
+    }
 
     @Override
     public void run() {
-        Page<FileEntity> fileEntityPage = fileEntityMapper
-                .selectPage(new Page<>(this.offset , 10000),
-                        new QueryWrapper<FileEntity>());
-        List<FileEntity> records = fileEntityPage.getRecords();
-        mergerList.addAll(records);
+        try {
+            Page<FileEntity> fileEntityPage = fileEntityMapper
+                    .selectPage(new Page<>(this.offset , 10000),
+                            new QueryWrapper<FileEntity>());
+            List<FileEntity> records = fileEntityPage.getRecords();
+            synchronized (mergerList){
+                mergerList.addAll(records);
+            }
+        } finally {
+            cd.countDown();
+        }
+
     }
 
 
